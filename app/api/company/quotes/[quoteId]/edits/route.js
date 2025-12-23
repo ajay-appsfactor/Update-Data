@@ -33,6 +33,9 @@ export async function GET(req, { params }) {
         shipping_zip: true,
         created_at: true,
         QuoteItems: {
+          orderBy: {
+            created_at: "desc",
+          },
           select: {
             id: true,
             file_name: true,
@@ -40,7 +43,7 @@ export async function GET(req, { params }) {
             service: true,
             material: true,
             finish: true,
-            description:true
+            description: true,
           },
         },
       },

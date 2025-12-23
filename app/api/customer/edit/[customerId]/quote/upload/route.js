@@ -86,7 +86,7 @@ export async function POST(req, { params }) {
       },
     });
 
-    console.log("user with customer:", userWithCustomer );
+    // console.log("user with customer:", userWithCustomer );
 
     if (!userWithCustomer || !userWithCustomer.customer) {
       return NextResponse.json(

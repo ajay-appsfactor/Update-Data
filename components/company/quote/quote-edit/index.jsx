@@ -77,7 +77,7 @@ const QuoteEdit = ({ quoteId }) => {
         <PaymentLink />
       </div>
 
-      <ModelsTable quoteItems={order.QuoteItems} />
+      <ModelsTable quoteItems={order.QuoteItems} quoteId={quoteId} />
       <FilesDownload />
 
       <div className="flex flex-col md:flex-row items-start md:items-center gap-3">

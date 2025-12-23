@@ -33,7 +33,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 
 const QuoteItemsForm = ({ quoteId }) => {
-  console.log("Quote Id is :", quoteId);
+  // console.log("Quote Id is :", quoteId);
   const router = useRouter();
   const [allServices, setAllServices] = useState([]);
   const [quoteItems, setQuoteItems] = useState([]);
@@ -69,7 +69,7 @@ const QuoteItemsForm = ({ quoteId }) => {
         const res = await fetch(`/api/company/quotes/${quoteId}`);
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         const data = await res.json();
-        // console.log("fetchQuoteItems :", data);
+        console.log("fetchQuoteItems :", data);
         // Store the array of items
         const itemsArray = Array.isArray(data?.QuoteItems)
           ? data.QuoteItems
@@ -120,16 +120,36 @@ const QuoteItemsForm = ({ quoteId }) => {
   };
 
   const initialValues = {
-    items: quoteItems.map((item) => ({
+  items: quoteItems.map((item) => {
+    // Convert SERVICE NAME -> ID
+    const serviceObj = allServices.find(
+      (s) => s.name === item.service
+    );
+
+    return {
       id: item.id,
       file_name: item.file_name,
       quantity: item.quantity || 1,
       description: item.description || "",
-      service: item.service || "",
-      material: item.material || "",
-      finish: item.finish || "",
-    })),
-  };
+      service: serviceObj?.id || "",  
+      material: item.material || "",   
+      finish: item.finish || "", 
+    };
+  }),
+};
+
+
+  // const initialValues = {
+  //   items: quoteItems.map((item) => ({
+  //     id: item.id,
+  //     file_name: item.file_name,
+  //     quantity: item.quantity || 1,
+  //     description: item.description || "",
+  //     service: item.service || "",
+  //     material: item.material || "",
+  //     finish: item.finish || "",
+  //   })),
+  // };
 
   const validationSchema = Yup.object().shape({
     items: Yup.array().of(

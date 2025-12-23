@@ -11,8 +11,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
-const ModelsTable = ({ quoteItems }) => {
+const ModelsTable = ({ quoteItems , quoteId}) => {
   if (!quoteItems || quoteItems.length === 0) {
     return <div className="p-4">No models found for this quote.</div>;
   }
@@ -38,7 +39,7 @@ const ModelsTable = ({ quoteItems }) => {
             {quoteItems.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
-                  <SquarePen className="w-4 h-4" />
+                  <Link href={`/quote/${quoteId}`}> <SquarePen className="w-4 h-4" /></Link>
                 </TableCell>
                 <TableCell className="text-blue-600">
                   {item.file_name || "No Name"}

@@ -7,17 +7,17 @@ import { headers } from "next/headers";
 import { superAdminDb } from "@/lib/db/superadmin";
 import { getTenantDbFromHeaders } from "@/lib/db/getTenantDbFromRequest";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 // Get Attachments & Notes Data
 export async function GET(req, { params }) {
   const { customerId } = await params;
   // const prisma = await getTenantDbFromHeaders();
-  const { tenantDb, timezone } = await getTenantDbFromHeaders();
+  const { tenantDb } = await getTenantDbFromHeaders();
   const checkCustomer = await tenantDb.customer.findUnique({
     where: { id: customerId },
   });
@@ -54,7 +54,7 @@ export async function POST(req, { params }) {
     }
 
     // Get tenant DB client
-    const { tenantDb, timezone } = await getTenantDbFromHeaders();
+    const { tenantDb } = await getTenantDbFromHeaders();
 
     // Check if customer exists
     const existingCustomer = await tenantDb.customer.findUnique({

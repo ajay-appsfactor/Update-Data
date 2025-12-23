@@ -5,20 +5,28 @@ export async function GET(req, { params }) {
   try {
     const { quoteId } = await params;
     // console.log("backend data id :", quoteId)
-    const {tenantDb} = await getTenantDbFromHeaders();
+    const { tenantDb } = await getTenantDbFromHeaders();
 
     const quoteWithItems = await tenantDb.quote.findUnique({
       where: { id: quoteId },
       select: {
         id: true,
-        created_month:true,
+        created_month: true,
         quote_item_id: true,
-        created_year:true,
+        created_year: true,
         QuoteItems: {
+          orderBy: {
+            created_at: "desc",
+          },
           select: {
             id: true,
             file_name: true,
             quantity: true,
+            description:true,
+            service:true,
+            material:true,
+            finish:true
+
           },
         },
       },
@@ -33,18 +41,19 @@ export async function GET(req, { params }) {
     return NextResponse.json(quoteWithItems);
   } catch (error) {
     // console.error("Error fetching quote:", error);
-    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 }
+    );
   }
 }
-
-
 
 export async function PUT(req, { params }) {
   const { quoteId } = await params;
   // console.log("Quote ID :", quoteId)
 
   try {
-    const items = await req.json(); 
+    const items = await req.json();
     // console.log("items :",items)
 
     const updatePromises = items.map((item) =>
